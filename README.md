@@ -35,7 +35,7 @@ To run the bot, use the following command:
 
 ```bash
 
-node index.js
+node bot.js
 ```
 
 The bot will send a random quote to the specified Nostr relays every hour. You can also see the output in the console indicating which quotes were sent and to which relays.
