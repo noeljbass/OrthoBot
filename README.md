@@ -16,7 +16,7 @@ To get started, clone the repository and install the required dependencies:
 ```bash
 git clone https://github.com/noeljbass/OrthoBot.git
 cd OrthoBot
-npm install 
+npm install ws nostr-tools bech32
 ```
 
 ## Usage
