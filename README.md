@@ -39,7 +39,8 @@ node bot.js
 ```
 
 The bot will send a random quote to the specified Nostr relays every hour. You can also see the output in the console indicating which quotes were sent and to which relays.
-Code Overview
+
+## Code Overview
 
 The main functionality of the bot is encapsulated in the following code:
 
@@ -54,7 +55,7 @@ useWebSocketImplementation(WebSocket);
 
 console.log({ nip19, finalizeEvent });
 
-// Array of Nostr relay URLs
+// Add the Nostr Relays you want to post your kind 1 events to
 const relays = [
     'wss://relay.nostr.band',
     'wss://relay.damus.io',
@@ -72,25 +73,21 @@ const quotes = [
     "Wherever you may go, the least plant may bring you clear remembrance of the Creator. - Saint Basil #biblestr #orthodoxy #ChristIsKing #christianity #orthobot"
 ];
 
-// Your provided npub and nsec
 const npub = '000000000000000000000000000000000000000000000000000000000000000'; // Add your bot npub here
 const nsec = '000000000000000000000000000000000000000000000000000000000000000'; // Add your bot nsec here
 
-// Function to convert Bech32 to hex
 function bech32ToHex(bech32Str) {
     const { prefix, words } = bech32.decode(bech32Str);
     const data = bech32.fromWords(words);
     return Buffer.from(data).toString('hex');
 }
 
-// Convert npub and nsec to hex
 const privateKeyHex = bech32ToHex(nsec);
 const publicKeyHex = bech32ToHex(npub);
 
-// Create a SimplePool instance
 const pool = new SimplePool();
 
-// Function to send a quote to all relays
+// Send a quote to all relays
 async function sendQuote() {
     const quote = quotes[Math.floor(Math.random() * quotes.length)];
     const event = {
@@ -101,7 +98,7 @@ async function sendQuote() {
         pubkey: publicKeyHex,
     };
 
-    // Finalize the event (this will sign it)
+    // Sign the event
     const signedEvent = finalizeEvent(event, privateKeyHex);
 
     // Iterate through each relay and try to publish
@@ -119,25 +116,22 @@ async function sendQuote() {
     console.error("Failed to send quote to all relays.");
 }
 
-// Function to handle graceful shutdown
 function shutdown() {
     console.log("Shutting down the bot...");
     process.exit(0);
 }
 
-// Listen for termination signals
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 
 // Send a quote every hour
-const intervalId = setInterval(sendQuote, 60 * 60 * 1000); // 60 minutes * 60 seconds * 1000 milliseconds
+const intervalId = setInterval(sendQuote, 60 * 60 * 1000); 
 
-// Send the first quote immediately
+// Send the first quote immediately upon bot.js launch
 sendQuote().catch(error => {
     console.error("Error sending the first quote:", error);
 });
 
-// Optional: Clear the interval on shutdown
 process.on('exit', () => {
     clearInterval(intervalId);
 });
@@ -149,9 +143,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue.
-
-## Acknowledgments
-
-    Nostr for the decentralized protocol.
-    nostr-tools for the JavaScript library.
-    ws for WebSocket support.
