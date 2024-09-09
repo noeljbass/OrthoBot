@@ -2,6 +2,10 @@
 
 This project is a simple Node.js bot that connects to multiple Nostr relays and sends random quotes at regular intervals. It utilizes WebSocket for real-time communication and the `nostr-tools` library for handling Nostr events.
 
+## Live Example
+
+https://primal.net/p/npub1f75jduk8flgyvjj0relm7qhwevc8av3tnrur0wugyulvxdxphhhsf28ufp
+
 ## Features
 
 - Connects to multiple Nostr relays.
